@@ -133,11 +133,7 @@ class Curve<T> {
           return this._rangeEvaluate(this.endTime); // Last keyframe
 
         case EndBehavior.Loop:
-
-          return this._rangeEvaluate(
-            ((time < 0) ? this.endTime + time : time)
-              % this.endTime,
-          ); // Use mod to loop
+          return this._rangeEvaluate((time % this.endTime) + (time < 0 ? this.endTime : 0));
 
         case EndBehavior.PingPong:
           return this._rangeEvaluate(this._pingPongTime(time));
