@@ -179,8 +179,10 @@ class Curve<T> {
 
     // Calculate ping-ponged time
     protected _pingPongTime(time: number) {
+      let modTime = (time - this.duration) % (2 * this.duration);
+      if (modTime < 0) modTime += 2 * this.duration;
       return Math.abs(
-        -((time - this.duration) % (2 * this.duration)) + this.duration,
+        -(modTime) + this.duration,
       );
     }
 
