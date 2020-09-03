@@ -30,4 +30,4 @@ dist/
 .cache/
 
 # Compiled code
-build/
+lib/
