@@ -1,0 +1,70 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true,
+            "ts": true
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "react/jsx-filename-extension": [
+            1,
+            {
+                "extensions": [
+                    ".jsx",
+                    ".tsx"
+                ]
+            }
+        ],
+        "react/prop-types": "off",
+        "react/destructuring-assignment": "off",
+        "react/no-unused-state": "off",
+        "import/extensions": "off",
+        "import/no-extraneous-dependencies": "off",
+        "class-methods-use-this": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "jsx-a11y/label-has-associated-control": "off",
+        "react/no-unescaped-entities": "off",
+        "@typescript-eslint/no-inferrable-types": "warn",
+        "no-param-reassign": "off",
+        "object-curly-newline": "off",
+        "react/jsx-one-expression-per-line": "off",
+        "no-restricted-globals": "off",
+        "import/newline-after-import": "off",
+        "lines-between-class-members": "off",
+        "no-underscore-dangle": "off",
+        "no-unused-vars": "warn",
+        "max-len": "warn"
+    },
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [
+                    ".js",
+                    ".jsx",
+                    ".ts",
+                    ".tsx"
+                ]
+            }
+        }
+    }
+}
