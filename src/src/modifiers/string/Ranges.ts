@@ -1,4 +1,4 @@
-import Curve, { CurveModifier, Keyframe } from '../../../index';
+import Curve, { CurveModifier } from '../../../index';
 
 type range = {min: number, max: number};
 

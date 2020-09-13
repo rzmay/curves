@@ -49,7 +49,10 @@ class BezierKeyframe extends Keyframe<number> {
 
       this.inHandle = inHandle ?? new BezierHandle(0);
       this.outHandle = outHandle
-          ?? new BezierHandle((this.inHandle.angle + Math.PI) % (Math.PI * 2), this.inHandle.magnitude);
+          ?? new BezierHandle(
+            (this.inHandle.angle + Math.PI) % (Math.PI * 2),
+            this.inHandle.magnitude,
+          );
 
       this.defaultMagnitude = defaultMagnitude;
     }

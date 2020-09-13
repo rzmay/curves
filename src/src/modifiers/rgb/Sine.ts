@@ -2,7 +2,6 @@ import CurveModifier from '../../CurveModifier';
 import { RGBColor } from '../../interfaces/RGBColor';
 import { SineModifierBlendMode } from '../number/Sine';
 
-
 class Sine extends CurveModifier<RGBColor> {
     amplitude: number;
     wavelength: number;
@@ -53,9 +52,9 @@ class Sine extends CurveModifier<RGBColor> {
           };
         case SineModifierBlendMode.MultiplyPositive:
           return {
-            r: value.r * (waveValue + this.amplitude) / 2,
-            g: value.g * (waveValue + this.amplitude) / 2,
-            b: value.b * (waveValue + this.amplitude) / 2,
+            r: (value.r * (waveValue + this.amplitude)) / 2,
+            g: (value.g * (waveValue + this.amplitude)) / 2,
+            b: (value.b * (waveValue + this.amplitude)) / 2,
           };
         default:
           addValue = 0; // Unreachable

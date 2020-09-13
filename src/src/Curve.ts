@@ -16,14 +16,14 @@ import BooleanKeyframe from './keyframes/BooleanKeyframe';
 import StringKeyframe from './keyframes/StringKeyframe';
 
 class Curve<T> {
-    static increaseFloat: Curve<number> = Curve.floatBuilder(0, 1);
-    static decreaseFloat: Curve<number> = Curve.floatBuilder(1, 0);
+    static increaseFloat: () => Curve<number> = () => Curve.floatBuilder(0, 1);
+    static decreaseFloat: () => Curve<number> = () => Curve.floatBuilder(1, 0);
 
-    static increaseColor: Curve<RGBColor> = Curve.rgbColorBuilder(
+    static increaseColor: () => Curve<RGBColor> = () => Curve.rgbColorBuilder(
       { r: 0, b: 0, g: 0 },
       { r: 255, b: 255, g: 255 },
     );
-    static decreaseColor: Curve<RGBColor> = Curve.rgbColorBuilder(
+    static decreaseColor: () => Curve<RGBColor> = () => Curve.rgbColorBuilder(
       { r: 255, b: 255, g: 255 },
       { r: 0, b: 0, g: 0 },
     );
@@ -109,7 +109,9 @@ class Curve<T> {
       let value = rawValue;
 
       // To avoid recursion on evaluation dependent modifiers like cycles
-      const modifiers = this.modifiers.slice(0, modifierStop === -1 ? this.modifiers.length : modifierStop);
+      const modifiers = this.modifiers.slice(0, modifierStop < 0
+        ? this.modifiers.length
+        : Math.max(Math.min(modifierStop, this.modifiers.length), 0));
 
       // Apply each modifier
       modifiers.forEach((m: CurveModifier<T>) => {

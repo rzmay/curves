@@ -2,7 +2,6 @@ import CurveModifier from '../../CurveModifier';
 import { HSVColor } from '../../interfaces/HSVColor';
 import { SineModifierBlendMode } from '../number/Sine';
 
-
 class Sine extends CurveModifier<HSVColor> {
     amplitude: number;
     wavelength: number;
@@ -53,9 +52,9 @@ class Sine extends CurveModifier<HSVColor> {
           };
         case SineModifierBlendMode.MultiplyPositive:
           return {
-            h: value.h * 3.6 * (waveValue + this.amplitude) / 2,
-            s: value.s * (waveValue + this.amplitude) / 2,
-            v: value.v * (waveValue + this.amplitude) / 2,
+            h: (value.h * 3.6 * (waveValue + this.amplitude)) / 2,
+            s: (value.s * (waveValue + this.amplitude)) / 2,
+            v: (value.v * (waveValue + this.amplitude)) / 2,
           };
         default:
           addValue = 0; // Unreachable

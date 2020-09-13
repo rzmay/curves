@@ -2,7 +2,6 @@ import CurveModifier from '../../CurveModifier';
 import { Vector3 } from '../../interfaces/Vector3';
 import { SineModifierBlendMode } from '../number/Sine';
 
-
 class Sine extends CurveModifier<Vector3> {
     amplitude: number;
     wavelength: number;

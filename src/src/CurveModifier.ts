@@ -1,4 +1,5 @@
 import Curve from './Curve';
+import CurveModifierWithParams from './CurveModifierWithParams';
 
 abstract class CurveModifier<T> {
     rangeStart: number;
@@ -30,6 +31,32 @@ abstract class CurveModifier<T> {
     }
 
     protected abstract _modify(value: T, time: number): T;
+
+    // Create a custom modifier quickly without defining a new class
+    static subclass<T>(
+      modify: (modifier: CurveModifierWithParams<T>, value: T, time: number) => T,
+      configure: ((modifier: CurveModifierWithParams<T>, curve: Curve<T>) => void) | undefined = undefined,
+    ): (
+        params: object,
+        rangeStart: number | undefined,
+        rangeEnd: number | undefined,
+    ) => CurveModifierWithParams<T> {
+      class Subclass extends CurveModifierWithParams<T> {
+        configure(curve: Curve<T>) {
+          if (configure) configure(this as Subclass, curve);
+        }
+
+        protected _modify(value: T, time: number): T {
+          return modify(this as Subclass, value, time);
+        }
+      }
+
+      return (
+        params: object = {},
+        rangeStart: number | undefined = undefined,
+        rangeEnd: number | undefined = undefined,
+      ) => new Subclass(params, rangeStart, rangeEnd);
+    }
 }
 
 export default CurveModifier;

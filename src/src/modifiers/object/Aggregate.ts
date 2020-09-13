@@ -2,7 +2,7 @@ import colorString from 'color-string';
 import Curve, { CurveModifier, Keyframe } from '../../../index';
 import { RGBColor } from '../../interfaces/RGBColor';
 
-type AggregateElements = {
+export type AggregateElements = {
     number?: CurveModifier<number>[],
     boolean?: CurveModifier<boolean>[],
     string?: CurveModifier<string>[],

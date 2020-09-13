@@ -46,12 +46,11 @@ class Sine extends CurveModifier<boolean> {
         case SineModifierBlendMode.Multiply:
           return numberValue * waveValue;
         case SineModifierBlendMode.MultiplyPositive:
-          return numberValue * (waveValue + this.amplitude) / 2;
+          return (numberValue * (waveValue + this.amplitude)) / 2;
         default:
           return numberValue; // Unreachable
       }
     }
 }
 
-export { SineModifierBlendMode };
 export default Sine;

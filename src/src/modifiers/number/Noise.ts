@@ -1,5 +1,5 @@
-import CurveModifier from '../../CurveModifier';
 import SimplexNoise from 'simplex-noise';
+import CurveModifier from '../../CurveModifier';
 
 class Noise extends CurveModifier<number> {
     amplitude: number;

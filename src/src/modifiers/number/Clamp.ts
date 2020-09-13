@@ -20,9 +20,8 @@ class Clamp extends CurveModifier<number> {
       return this.clamp(value);
     }
 
-    private clamp(value: number)
-    {
-        return Math.min(Math.max(value, this.min), this.max);
+    private clamp(value: number): number {
+      return Math.min(Math.max(value, this.min), this.max);
     }
 }
 

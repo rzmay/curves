@@ -17,12 +17,11 @@ class Clamp extends CurveModifier<number[]> {
     }
 
     protected _modify(value: number[], time: number): number[] {
-      return value.map(v => this.clamp(v));
+      return value.map((v) => this.clamp(v));
     }
 
-    private clamp(value: number)
-    {
-        return Math.min(Math.max(value, this.min), this.max);
+    private clamp(value: number) {
+      return Math.min(Math.max(value, this.min), this.max);
     }
 }
 

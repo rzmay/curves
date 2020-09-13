@@ -2,7 +2,7 @@ import { Easing } from 'eaz';
 import Keyframe from './Keyframe';
 
 class NumberKeyframe extends Keyframe<number> {
-  interpolate(keyframe: NumberKeyframe, time: number, smoothing = 0.25): number {
+  interpolate(keyframe: Keyframe<number>, time: number, smoothing = 0.25): number {
     return NumberKeyframe.lerp(
       this.value,
       keyframe.value,

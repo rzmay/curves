@@ -11,7 +11,7 @@ class Noise extends CurveModifier<HSVColor> {
     simplexV: SimplexNoise;
 
     constructor(
-      amplitude = 25,
+      amplitude = 10,
       frequency = 1,
       seed = 0,
       rangeStart: number | undefined = undefined,
