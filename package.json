@@ -11,9 +11,6 @@
     "type": "git",
     "url": "https://github.com/robertmay2003/curves.git"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "homepage": "https://github.com/robertmay2003/eaz#readme",
   "scripts": {
     "build": "rimraf ./build && tsc",
