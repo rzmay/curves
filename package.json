@@ -1,6 +1,6 @@
 {
   "name": "curves",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "📈 Easily define and evaluate eased curves, similar to Unity's AnimationCurves with modifiers akin to Blender's FCurve Modifiers",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -10,6 +10,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/robertmay2003/curves.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   },
   "homepage": "https://github.com/robertmay2003/eaz#readme",
   "scripts": {
