@@ -1,6 +1,6 @@
 {
   "name": "curves",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "📈 Easily define and evaluate eased curves, similar to Unity's AnimationCurves with modifiers akin to Blender's FCurve Modifiers",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -11,7 +11,7 @@
     "type": "git",
     "url": "https://github.com/robertmay2003/curves.git"
   },
-  "homepage": "https://github.com/robertmay2003/eaz#readme",
+  "homepage": "https://github.com/robertmay2003/curves#readme",
   "scripts": {
     "build": "rimraf ./build && tsc",
     "test": "npm run build && node build/tests/test.js",
