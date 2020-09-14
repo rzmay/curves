@@ -1,6 +1,5 @@
 import { Easing } from 'eaz';
 import { Curve } from '../../index';
-import KeyframeWithParams from './KeyframeWithParams';
 
 abstract class Keyframe<T> {
     time: number;
@@ -33,35 +32,35 @@ abstract class Keyframe<T> {
       // pass
     }
 
-    // Create a custom keyframe easily without defining a subclass
-    static subclass<T>(
-      interpolate: (thisKeyframe: KeyframeWithParams<T>, nextKeyframe: KeyframeWithParams<T>, time: number, smoothing: number) => T,
-      configure: ((thisKeyframe: KeyframeWithParams<T>, curve: Curve<T>) => void) | undefined = undefined,
-    ): (
-        time: number,
-        value: T,
-        params: object,
-        inEasing: Easing,
-        outEasing: Easing | undefined,
-    ) => KeyframeWithParams<T> {
-      class Subclass extends KeyframeWithParams<T> {
-        interpolate(keyframe: KeyframeWithParams<T>, time: number, smoothing: number): T {
-          return interpolate(this as Subclass, keyframe, time, smoothing);
-        }
-
-        configure(curve: Curve<T>) {
-          if (configure) configure(this as Subclass, curve);
-        }
-      }
-
-      return (
-        time: number,
-        value: T,
-        params: object = {},
-        inEasing: Easing = Easing.cubic,
-        outEasing: Easing | undefined = undefined,
-      ) => new Subclass(time, value, params, inEasing, outEasing);
-    }
+  // Create a custom keyframe easily without defining a subclass
+  // static subclass<T>(
+  //   interpolate: (thisKeyframe: KeyframeWithParams<T>, nextKeyframe: KeyframeWithParams<T>, time: number, smoothing: number) => T,
+  //   configure: ((thisKeyframe: KeyframeWithParams<T>, curve: Curve<T>) => void) | undefined = undefined,
+  // ): (
+  //     time: number,
+  //     value: T,
+  //     params: object,
+  //     inEasing: Easing,
+  //     outEasing: Easing | undefined,
+  // ) => KeyframeWithParams<T> {
+  //   class Subclass extends KeyframeWithParams<T> {
+  //     interpolate(keyframe: KeyframeWithParams<T>, time: number, smoothing: number): T {
+  //       return interpolate(this as Subclass, keyframe, time, smoothing);
+  //     }
+  //
+  //     configure(curve: Curve<T>) {
+  //       if (configure) configure(this as Subclass, curve);
+  //     }
+  //   }
+  //
+  //   return (
+  //     time: number,
+  //     value: T,
+  //     params: object = {},
+  //     inEasing: Easing = Easing.cubic,
+  //     outEasing: Easing | undefined = undefined,
+  //   ) => new Subclass(time, value, params, inEasing, outEasing);
+  // }
 }
 
 export default Keyframe;
