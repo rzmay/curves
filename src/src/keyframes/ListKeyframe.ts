@@ -28,21 +28,11 @@ class ListKeyframe extends Keyframe<number[]> {
         return numberKeyframes.map((v, i) => v.interpolate(nextNumberKeyframes[i] ?? defaultKeyframe, time));
       }
 
-      // Invert easing to maintain correct order when interpolating backwards
-      return nextNumberKeyframes.map((v, i) => ListKeyframe.invertedEasing(v).interpolate(ListKeyframe.invertedEasing(numberKeyframes[i] ?? defaultNextKeyframe), 1 - time));
+      return nextNumberKeyframes.map((v, i) => v.interpolate(numberKeyframes[i] ?? defaultNextKeyframe, 1 - time));
     }
 
     toNumberKeyframes(): NumberKeyframe[] {
       return this.value.map((v) => new NumberKeyframe(this.time, v, this.inEasing, this.outEasing));
-    }
-
-    private static invertedEasing(keyframe: NumberKeyframe): NumberKeyframe {
-      return new NumberKeyframe(
-        keyframe.time,
-        keyframe.value,
-        keyframe.outEasing,
-        keyframe.inEasing,
-      );
     }
 }
 
