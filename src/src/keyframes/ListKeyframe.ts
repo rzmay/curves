@@ -20,15 +20,15 @@ class ListKeyframe extends Keyframe<number[]> {
     interpolate(keyframe: ListKeyframe, time: number): number[] {
       const numberKeyframes = this.toNumberKeyframes();
       const nextNumberKeyframes = keyframe.toNumberKeyframes();
-      const defaultKeyframe = new NumberKeyframe(keyframe.time, 0, this.inEasing);
-      const defaultNextKeyframe = new NumberKeyframe(this.time, 0, keyframe.inEasing);
+      const defaultKeyframe = new NumberKeyframe(this.time, 0, this.inEasing, this.outEasing);
+      const defaultNextKeyframe = new NumberKeyframe(keyframe.time, 0, keyframe.inEasing, keyframe.outEasing);
 
       const shorter = numberKeyframes.length <= nextNumberKeyframes.length;
       if (this.truncate ? shorter : !shorter) {
-        return numberKeyframes.map((v, i) => v.interpolate(nextNumberKeyframes[i] ?? defaultKeyframe, time));
+        return numberKeyframes.map((v, i) => v.interpolate(nextNumberKeyframes[i] ?? defaultNextKeyframe, time));
       }
 
-      return nextNumberKeyframes.map((next, i) => (numberKeyframes[i] ?? defaultNextKeyframe).interpolate(next, time));
+      return nextNumberKeyframes.map((next, i) => (numberKeyframes[i] ?? defaultKeyframe).interpolate(next, time));
     }
 
     toNumberKeyframes(): NumberKeyframe[] {
