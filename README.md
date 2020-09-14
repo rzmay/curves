@@ -7,6 +7,7 @@ Installation:
 
 #### [npm](https://www.npmjs.com/package/curves) ![npmlogo](https://raw.githubusercontent.com/npm/logos/master/npm%20square/npm-16.png)
 #### [documentation](http://robertzmay.com/curves-documentation/) 📖
+#### [Live Demo](http://robertzmay.com/curves-demo/) 📉
 
 ---
 
