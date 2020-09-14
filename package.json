@@ -1,6 +1,6 @@
 {
   "name": "curves",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "📈 Easily define and evaluate eased curves, similar to Unity's AnimationCurves with modifiers akin to Blender's FCurve Modifiers",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
