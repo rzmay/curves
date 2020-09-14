@@ -13,7 +13,7 @@
   },
   "homepage": "https://github.com/robertmay2003/curves#readme",
   "scripts": {
-    "build": "rimraf ./build && tsc",
+    "build": "rimraf ./lib && tsc",
     "test": "npm run build && node build/tests/test.js",
     "prepare": "npm run build"
   },
