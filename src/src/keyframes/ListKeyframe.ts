@@ -28,7 +28,7 @@ class ListKeyframe extends Keyframe<number[]> {
         return numberKeyframes.map((v, i) => v.interpolate(nextNumberKeyframes[i] ?? defaultKeyframe, time));
       }
 
-      return nextNumberKeyframes.map((v, i) => v.interpolate(numberKeyframes[i] ?? defaultNextKeyframe, 1 - time));
+      return nextNumberKeyframes.map((next, i) => (numberKeyframes[i] ?? defaultNextKeyframe).interpolate(next, time));
     }
 
     toNumberKeyframes(): NumberKeyframe[] {
