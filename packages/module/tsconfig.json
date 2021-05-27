@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": [
+      "es2019",
+      "esnext.array",
+      "dom"
+    ],
+    "module": "commonjs",
+    "declaration": true,
+    "outDir": "./build",
+    "strict": true,
+    "esModuleInterop": true
+  }
+}

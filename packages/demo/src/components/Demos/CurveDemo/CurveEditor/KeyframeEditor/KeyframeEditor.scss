@@ -1,0 +1,23 @@
+.keyframe-delete-icon {
+  color: indianred;
+
+  :hover {
+    color: firebrick;
+  }
+}
+
+.keyframe-add-icon {
+  color: dodgerblue;
+
+  :hover {
+    color: blue;
+  }
+}
+
+.fa-icon-button {
+  transition: 0.2s;
+
+  :hover {
+    transition: 0.2s;
+  }
+}

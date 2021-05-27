@@ -1,0 +1,16 @@
+.object-demo-container {
+  margin-top: 30px;
+
+  .object-demo-canvas-container {
+    height: 300px;
+
+    margin-bottom: 10px;
+
+    box-shadow: -2px 2px 10px lightgray;
+    border-radius: 10px;
+
+    background-color: lightgray;
+
+    overflow: hidden;
+  }
+}

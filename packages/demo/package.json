@@ -1,0 +1,167 @@
+{
+  "name": "curves-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "📉 Demo site for the curves node module.",
+  "scripts": {
+    "watch": "parcel serve src/index.html",
+    "build": "parcel build src/index.html --public-url /curves-demo/",
+    "deploy": "deploy.sh"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "@babel/register": "^7.10.4",
+    "@babel/runtime": "^7.11.2",
+    "@fortawesome/fontawesome-svg-core": "^1.2.30",
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
+    "@fortawesome/react-fontawesome": "^0.1.11",
+    "@material-ui/core": "^4.11.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@tweenjs/tween.js": "^18.5.0",
+    "@types/jest": "^24.0.0",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.0",
+    "babel-plugin-react-scoped-css": "^1.1.0",
+    "bootstrap": "^4.4.1",
+    "color-convert": "^2.0.1",
+    "color-string": "^1.5.3",
+    "constate": "^2.0.0",
+    "cookie-parser": "~1.4.3",
+    "cubic-roots": "^2.0.0",
+    "debug": "~2.6.9",
+    "deep-equal": "^2.0.3",
+    "eaz": "^1.0.2",
+    "ejs": "^3.0.1",
+    "es6-tween": "^5.5.11",
+    "express": "~4.16.0",
+    "express-fileupload": "^1.1.6",
+    "firebase-admin": "^8.9.2",
+    "formik": "^2.1.4",
+    "http-errors": "~1.6.2",
+    "lerp": "^1.0.3",
+    "morgan": "~1.9.0",
+    "randomstring": "^1.1.5",
+    "react": "^16.13.1",
+    "react-bootstrap": "^1.0.0-beta.16",
+    "react-color": "^2.18.1",
+    "react-dom": "^16.13.1",
+    "react-json-view": "^1.19.1",
+    "react-markdown": "^4.3.1",
+    "react-recaptcha": "^2.3.10",
+    "react-router-bootstrap": "^0.25.0",
+    "react-scripts": "^3.4.3",
+    "react-three-fiber": "^4.2.20",
+    "rfs": "^9.0.2",
+    "rsuite": "^4.8.2",
+    "sass": "^1.25.0",
+    "simplex-noise": "^2.4.0",
+    "three": "^0.114.0",
+    "typescript": "^3.8.2",
+    "uuid": "^8.3.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.4",
+    "@babel/preset-react": "^7.10.4",
+    "@types/express": "^4.17.2",
+    "@typescript-eslint/eslint-plugin": "^2.18.0",
+    "@typescript-eslint/parser": "^2.18.0",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-class-properties": "^7.0.0-beta.3",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "marked": "^1.1.1",
+    "nodemon": "^2.0.4",
+    "parcel": "^2.0.0-beta.3.1",
+    "rimraf": "^3.0.2"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts"
+    ],
+    "setupFiles": [
+      "react-app-polyfill/jsdom"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setupTests.ts"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
+      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
+    ],
+    "testEnvironment": "jest-environment-jsdom-fourteen",
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
+      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
+      "^.+\\.module\\.(css|sass|scss)$"
+    ],
+    "modulePaths": [],
+    "moduleNameMapper": {
+      "^react-native$": "react-native-web",
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
+    },
+    "moduleFileExtensions": [
+      "web.js",
+      "js",
+      "web.ts",
+      "ts",
+      "web.tsx",
+      "tsx",
+      "json",
+      "web.jsx",
+      "jsx",
+      "node"
+    ],
+    "watchPlugins": [
+      "jest-watch-typeahead/filename",
+      "jest-watch-typeahead/testname"
+    ]
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/react",
+        {
+          "absoluteRuntime": false
+        }
+      ]
+    ],
+    "plugins": [
+      "transform-class-properties",
+      [
+        "babel-plugin-react-scoped-css",
+        {
+          "include": ".local.(sa|sc|c)ss$"
+        }
+      ]
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+.object-logger-container {
+  height: 300px;
+
+  margin-bottom: 10px;
+
+  box-shadow: -2px 2px 10px lightgray;
+  border-radius: 10px;
+
+  overflow: auto;
+
+  .json-logger {
+    padding: 30px;
+
+    font-size: larger;
+  }
+}
