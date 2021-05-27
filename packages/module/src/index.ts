@@ -11,7 +11,6 @@ import ObjectKeyframe from './keyframes/ObjectKeyframe';
 import Curve from './Curve';
 import CurveModifier from './CurveModifier';
 import Modifiers from './modifiers';
-import ColorHelper from './helpers/ColorHelper';
 import { RGBColor } from './interfaces/RGBColor';
 import { HSVColor } from './interfaces/HSVColor';
 import { Vector3 } from './interfaces/Vector3';
@@ -34,7 +33,6 @@ export {
   CurveModifier,
   Modifiers,
   SineModifierBlendMode,
-  ColorHelper,
   RGBColor,
   HSVColor,
   Vector3,
