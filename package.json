@@ -34,6 +34,7 @@
   "author": "Robert May",
   "license": "ISC",
   "dependencies": {
+    "color-string": "^2.1.4",
     "eaz": "^1.0.2",
     "simplex-noise": "^2.4.0"
   },
