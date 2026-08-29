@@ -28,17 +28,20 @@ class Aggregate extends CurveModifier<object> {
       Object.keys(value).forEach((key) => {
         if (typeof value[key] === 'string' && colorString.get(value[key]) !== null) { // Check for color
           const color = colorString.get(value[key]);
+          if (color != null) {
+            // Apply each color modifier
+            let colorResult = { r: color.value[0], g: color.value[1], b: color.value[2] };
+            (this.elements.color ?? []).forEach((modifier) => {
+              colorResult = modifier.modifyExternal(colorResult, time);
+            });
 
-          // Apply each color modifier
-          let colorResult = { r: color.value[0], g: color.value[1], b: color.value[2] };
-          (this.elements.color ?? []).forEach((modifier) => {
-            colorResult = modifier.modifyExternal(colorResult, time);
-          });
-
-          result[key] = colorString.to[color.model](
-            [colorResult.r, colorResult.g, colorResult.b],
-            color.value[3],
-          );
+            result[key] = colorString.to[color.model](
+              colorResult.r,
+              colorResult.g,
+              colorResult.b,
+              color.value[3],
+            );
+          }
         } else if (Array.isArray(value[key]) && value[key].every((e) => typeof e === 'number')) { // Check for number[]
           // Apply each modifier
           let listResult = value[key];

@@ -4,7 +4,6 @@ import Keyframe from './Keyframe';
 import NumberKeyframe from './NumberKeyframe';
 import BooleanKeyframe from './BooleanKeyframe';
 import StringKeyframe from './StringKeyframe';
-import RGBColorKeyframe from './RGBColorKeyframe';
 import { Vector3Keyframe } from '../../index';
 
 class ObjectKeyframe extends Keyframe<object> {
@@ -67,12 +66,16 @@ class ObjectKeyframe extends Keyframe<object> {
       const alphaResult = currentColor.alpha.interpolate(nextColor.alpha, time);
 
       // Convert back to color string, set value
-      result = colorString.to[color.model](
-        [colorResult.x, colorResult.y, colorResult.z],
-        alphaResult,
-      );
+      if (color != null) {
+        result = colorString.to[color.model](
+          colorResult.x,
+          colorResult.y,
+          colorResult.z,
+          alphaResult,
+        );
 
-      return result;
+        return result;
+      }
     }
 
     // Otherwise check primitives
