@@ -27,7 +27,7 @@ function HSLtoRGB(color: HSVColor): RGBColor {
 
 function HSVtoHSL(color: HSVColor): HSVColor {
   const hsv = normalizeHSV(color);
-  const hslList = convert.hsv.hls(hsv.h, hsv.s, hsv.v);
+  const hslList = convert.hsv.hsl(hsv.h, hsv.s, hsv.v);
   return { h: hslList[0], s: hslList[1], v: hslList[2] };
 }
 
