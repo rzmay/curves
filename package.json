@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/robertmay2003/curves#readme",
   "scripts": {
-    "build": "tsc --noEmit && tsdown",
+    "build": "tsdown && tsc --emitDeclarationOnly",
     "test": "npm run build && node build/tests/test.js",
     "prepare": "npm run build"
   },
