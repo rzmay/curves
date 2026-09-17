@@ -2,7 +2,7 @@ import { Easing } from 'eaz';
 import EndBehavior from './EndBehavior';
 import Keyframe from './keyframes/Keyframe';
 import NumberKeyframe from './keyframes/NumberKeyframe';
-import BezierKeyframe, { BezierHandle } from './keyframes/BezierKeyframe';
+import BezierKeyframe from './keyframes/BezierKeyframe';
 import { RGBColor } from './interfaces/RGBColor';
 import RGBColorKeyframe from './keyframes/RGBColorKeyframe';
 import { Vector3 } from './interfaces/Vector3';

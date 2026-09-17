@@ -10,6 +10,13 @@ export type AggregateElements = {
     color?: CurveModifier<RGBColor>[]
 }
 
+type AggregateValue = Record<string, any>;
+type AggregatePrimitiveElement = 'number' | 'boolean' | 'string';
+
+const isAggregatePrimitiveElement = (type: string): type is AggregatePrimitiveElement => (
+  type === 'number' || type === 'boolean' || type === 'string'
+);
+
 class Aggregate extends CurveModifier<object> {
     elements: AggregateElements;
 
@@ -24,10 +31,11 @@ class Aggregate extends CurveModifier<object> {
     }
 
     protected _modify(value: object, time: number): object {
-      const result = {};
-      Object.keys(value).forEach((key) => {
-        if (typeof value[key] === 'string' && colorString.get(value[key]) !== null) { // Check for color
-          const color = colorString.get(value[key]);
+      const result: AggregateValue = {};
+      const aggregateValue = value as AggregateValue;
+      Object.keys(aggregateValue).forEach((key) => {
+        if (typeof aggregateValue[key] === 'string' && colorString.get(aggregateValue[key]) !== null) { // Check for color
+          const color = colorString.get(aggregateValue[key]);
           if (color != null) {
             // Apply each color modifier
             let colorResult = { r: color.value[0], g: color.value[1], b: color.value[2] };
@@ -42,22 +50,25 @@ class Aggregate extends CurveModifier<object> {
               color.value[3],
             );
           }
-        } else if (Array.isArray(value[key]) && value[key].every((e) => typeof e === 'number')) { // Check for number[]
+        } else if (Array.isArray(aggregateValue[key]) && aggregateValue[key].every((e) => typeof e === 'number')) { // Check for number[]
           // Apply each modifier
-          let listResult = value[key];
+          let listResult = aggregateValue[key];
           (this.elements.list ?? []).forEach((modifier) => {
             listResult = modifier.modifyExternal(listResult, time);
           });
 
           result[key] = listResult;
-        } else if (typeof value[key] === 'object') { // Apply for objects
+        } else if (typeof aggregateValue[key] === 'object') { // Apply for objects
           // Recurse
-          result[key] = this._modify(value[key], time);
+          result[key] = this._modify(aggregateValue[key], time);
         } else { // Apply to specific types
-          let keyResult = value[key];
-          (this.elements[typeof value[key]] ?? []).forEach((modifier) => {
-            keyResult = modifier.modifyExternal(keyResult, time);
-          });
+          let keyResult = aggregateValue[key];
+          const valueType = typeof aggregateValue[key];
+          if (isAggregatePrimitiveElement(valueType)) {
+            (this.elements[valueType] ?? []).forEach((modifier: CurveModifier<any>) => {
+              keyResult = modifier.modifyExternal(keyResult, time);
+            });
+          }
 
           result[key] = keyResult;
         }

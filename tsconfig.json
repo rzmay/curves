@@ -1,23 +1,18 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
+    "target": "es6",
     "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
+      "esnext",
+      "esnext.array",
+      "dom"
     ],
-    "allowJs": true,
+    "module": "esnext",
     "declaration": true,
-    "outDir": "lib",
-    "rootDir": "src",
+    "rootDir": "./src",
+    "outDir": "./build",
+    "types": [],
     "strict": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "noImplicitAny": false,
-    "jsx": "react"
+    "moduleResolution": "bundler"
   },
   "include": ["src"],
   "exclude": ["node_modules", "demo"]
