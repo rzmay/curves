@@ -11,10 +11,10 @@ import Curve from './src/Curve';
 import CurveModifier from './src/CurveModifier';
 import Modifiers from './src/modifiers';
 import ColorHelper from './src/helpers/ColorHelper';
-import { RGBColor } from './src/interfaces/RGBColor';
-import { HSVColor } from './src/interfaces/HSVColor';
-import { Vector3 } from './src/interfaces/Vector3';
 import { SineModifierBlendMode } from './src/modifiers/number/Sine';
+import type { RGBColor } from './src/interfaces/RGBColor';
+import type { HSVColor } from './src/interfaces/HSVColor';
+import type { Vector3 } from './src/interfaces/Vector3';
 
 export default Curve;
 export {
@@ -33,6 +33,9 @@ export {
   Modifiers,
   SineModifierBlendMode,
   ColorHelper,
+};
+
+export type {
   RGBColor,
   HSVColor,
   Vector3,
