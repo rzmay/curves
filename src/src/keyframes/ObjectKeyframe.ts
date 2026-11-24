@@ -33,8 +33,7 @@ class ObjectKeyframe extends Keyframe<object> {
     const value = this.value as ObjectKeyframeValue;
     const keyframeValue = keyframe.value as ObjectKeyframeValue;
 
-    const keysWithDuplicates = Object.keys(value).concat(Object.keys(keyframeValue));
-    const keys = keysWithDuplicates.filter((elem, pos) => keysWithDuplicates.indexOf(elem) === pos);
+    const keys = new Set([...Object.keys(value), ...Object.keys(keyframeValue)]);
 
     keys.forEach((key) => {
       // If null, interpolate from next keyframe

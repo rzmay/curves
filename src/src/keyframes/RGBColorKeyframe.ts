@@ -1,9 +1,18 @@
 import Keyframe from './Keyframe';
 import { RGBColor } from '../interfaces/RGBColor';
-import NumberKeyframe from './NumberKeyframe';
+import NumberKeyframe, { easeTime, lerp } from './NumberKeyframe';
 
 class RGBColorKeyframe extends Keyframe<RGBColor> {
   interpolate(keyframe: RGBColorKeyframe, time: number): RGBColor {
+    if (this.toFloatKeyframe === toFloatKeyframe && keyframe.toFloatKeyframe === toFloatKeyframe) {
+      const t = easeTime(this.inEasing, keyframe.outEasing, time);
+      return {
+        r: lerp(this.value.r, keyframe.value.r, t),
+        g: lerp(this.value.g, keyframe.value.g, t),
+        b: lerp(this.value.b, keyframe.value.b, t),
+      };
+    }
+
     const floatKeyframes = this.toFloatKeyframe();
     const nextFloatKeyframes = keyframe.toFloatKeyframe();
 
@@ -22,5 +31,7 @@ class RGBColorKeyframe extends Keyframe<RGBColor> {
     ];
   }
 }
+
+const { toFloatKeyframe } = RGBColorKeyframe.prototype;
 
 export default RGBColorKeyframe;

@@ -1,9 +1,18 @@
 import Keyframe from './Keyframe';
 import { HSVColor } from '../interfaces/HSVColor';
-import NumberKeyframe from './NumberKeyframe';
+import NumberKeyframe, { easeTime, lerp } from './NumberKeyframe';
 
 class HSVColorKeyframe extends Keyframe<HSVColor> {
   interpolate(keyframe: HSVColorKeyframe, time: number): HSVColor {
+    if (this.toFloatKeyframe === toFloatKeyframe && keyframe.toFloatKeyframe === toFloatKeyframe) {
+      const t = easeTime(this.inEasing, keyframe.outEasing, time);
+      return {
+        h: lerp(this.value.h, keyframe.value.h, t),
+        s: lerp(this.value.s, keyframe.value.s, t),
+        v: lerp(this.value.v, keyframe.value.v, t),
+      };
+    }
+
     const floatKeyframes = this.toFloatKeyframe();
     const nextFloatKeyframes = keyframe.toFloatKeyframe();
 
@@ -22,5 +31,7 @@ class HSVColorKeyframe extends Keyframe<HSVColor> {
     ];
   }
 }
+
+const { toFloatKeyframe } = HSVColorKeyframe.prototype;
 
 export default HSVColorKeyframe;

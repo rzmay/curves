@@ -14,19 +14,33 @@ import ObjectKeyframe from './keyframes/ObjectKeyframe';
 import CurveModifier from './CurveModifier';
 import BooleanKeyframe from './keyframes/BooleanKeyframe';
 import StringKeyframe from './keyframes/StringKeyframe';
+import { normalizeKeyframeMap, type KeyframeMap } from './helpers/normalizeKeyframeMap';
+
+type Evaluator<Output> = (time: number, modifierStop?: number) => Output;
+
+type CastedCurve<Source, Output> = Omit<Source, 'evaluate' | 'source'> & Evaluator<Output> & Readonly<{
+    evaluate: Evaluator<Output>;
+    source: Source;
+}>;
 
 class Curve<T> {
-    static increaseFloat: () => Curve<number> = () => Curve.floatBuilder(0, 1);
-    static decreaseFloat: () => Curve<number> = () => Curve.floatBuilder(1, 0);
+    static increaseFloat: (easing?: Easing) => Curve<number> = (easing = Easing.cubic) => new Curve({
+      0: [0, easing],
+      1: [1, easing],
+    });
+    static decreaseFloat: (easing?: Easing) => Curve<number> = (easing = Easing.cubic) => new Curve({
+      0: [1, easing],
+      1: [0, easing],
+    });
 
-    static increaseColor: () => Curve<RGBColor> = () => Curve.rgbColorBuilder(
-      { r: 0, b: 0, g: 0 },
-      { r: 255, b: 255, g: 255 },
-    );
-    static decreaseColor: () => Curve<RGBColor> = () => Curve.rgbColorBuilder(
-      { r: 255, b: 255, g: 255 },
-      { r: 0, b: 0, g: 0 },
-    );
+    static increaseColor: (easing?: Easing) => Curve<RGBColor> = (easing = Easing.cubic) => new Curve({
+      0: [{ r: 0, b: 0, g: 0 }, easing],
+      1: [{ r: 255, b: 255, g: 255 }, easing],
+    });
+    static decreaseColor: (easing?: Easing) => Curve<RGBColor> = (easing = Easing.cubic) => new Curve({
+      0: [{ r: 255, b: 255, g: 255 }, easing],
+      1: [{ r: 0, b: 0, g: 0 }, easing],
+    });
 
     keys: Keyframe<T>[];
     modifiers: CurveModifier<T>[];
@@ -39,15 +53,41 @@ class Curve<T> {
 
     smoothing = 0.25;
 
-    constructor(keys: Keyframe<T>[] = [], modifiers: CurveModifier<T>[] = [], endBehavior: EndBehavior = EndBehavior.Clamp, smoothing = 0.25) {
-      this.keys = keys;
-      this.endBehaviour = endBehavior;
+    constructor(keys: Keyframe<T>[] | KeyframeMap<T> = [], modifiers?: CurveModifier<T>[], endBehavior?: EndBehavior, smoothing?: number) {
+      const input = Array.isArray(keys)
+        ? { keys, modifiers: undefined, endBehavior: undefined, smoothing: undefined }
+        : normalizeKeyframeMap(keys);
+      this.keys = input.keys;
+      this.endBehaviour = endBehavior ?? input.endBehavior ?? EndBehavior.Clamp;
+      this.modifiers = modifiers ?? input.modifiers ?? [];
+      this.smoothing = smoothing ?? input.smoothing ?? 0.25;
 
-      this.modifiers = modifiers;
+      const target = (...args: [time: number, modifierStop?: number]): T => curve.evaluate(...args);
+      // Leave these names available for subclass fields.
+      Reflect.deleteProperty(target, 'name');
+      Reflect.deleteProperty(target, 'length');
 
-      this.smoothing = smoothing;
+      // Use the returned proxy as the receiver for both base and subclass methods.
+      Object.setPrototypeOf(target, Object.getPrototypeOf(this));
+      Reflect.ownKeys(this).forEach((property) => {
+        const descriptor = Object.getOwnPropertyDescriptor(this, property) as PropertyDescriptor;
+        Object.defineProperty(target, property, descriptor);
+      });
 
-      this.update();
+      const curve = new Proxy(target, {
+        get(callable, property, receiver) {
+          const value = Reflect.get(callable, property, receiver);
+          return value !== undefined || Reflect.has(callable, property)
+            ? value : Reflect.get(Function.prototype, property, receiver);
+        },
+        has(callable, property) {
+          return Reflect.has(callable, property) || Reflect.has(Function.prototype, property);
+        },
+      }) as Curve<T>;
+
+      curve.evaluate = curve.evaluate.bind(curve);
+      curve.update();
+      return curve;
     }
 
     update() {
@@ -95,6 +135,41 @@ class Curve<T> {
     evaluate(time: number, modifierStop = -1): T {
       const rawValue = this._rawEvaluate(time);
       return this._applyModifiers(rawValue, time, modifierStop);
+    }
+
+    cast<Output>(convert: (value: T) => Output): CastedCurve<this, Output> {
+      const evaluate = (...args: Parameters<Curve<T>['evaluate']>) => convert(this.evaluate(...args));
+      const target = Object.defineProperties(evaluate.bind(undefined), {
+        evaluate: { value: evaluate, enumerable: true },
+        source: { value: this },
+      });
+      // Keep the function's metadata from hiding subclass members.
+      Reflect.deleteProperty(target, 'name');
+      Reflect.deleteProperty(target, 'length');
+      Object.setPrototypeOf(target, Object.getPrototypeOf(this));
+
+      const hasOwn = (key: PropertyKey) => Object.prototype.hasOwnProperty.call(target, key);
+      const methods = new WeakMap<Function, Function>();
+      return new Proxy(target, {
+        get: (_, key, receiver) => {
+          if (hasOwn(key)) return Reflect.get(target, key, receiver);
+
+          const value = Reflect.get(this, key);
+          // Built-in methods keep the view as their receiver.
+          if (typeof value !== 'function' || key === 'constructor'
+              || value === Reflect.getOwnPropertyDescriptor(Function.prototype, key)?.value
+              || value === Reflect.getOwnPropertyDescriptor(Object.prototype, key)?.value) return value;
+
+          const cached = methods.get(value);
+          if (cached) return cached;
+          const bound = Function.prototype.bind.call(value, this) as Function;
+          methods.set(value, bound);
+          return bound;
+        },
+        set: (_, key, value, receiver) => (hasOwn(key) || !Reflect.has(this, key)
+          ? Reflect.set(target, key, value, receiver)
+          : Reflect.set(this, key, value)),
+      }) as CastedCurve<this, Output>;
     }
 
     private _configureKeyframes() {
@@ -147,21 +222,21 @@ class Curve<T> {
 
     // Time is guaranteed to be in curve range
     protected _rangeEvaluate(time: number): T {
+      const { keys } = this;
       // Edge cases
-      if (time === this.startTime) return this.keys[0].value;
-      if (time === this.endTime) return this.keys[this.keys.length - 1].value;
+      if (time === this.startTime) return keys[0].value;
+      if (time === this.endTime) return keys[keys.length - 1].value;
 
       let index = 0;
-      let found = false;
 
-      for (let i = 0; i < this.keys.length && !found; i += 1) {
-        if (time <= this.keys[i].time) {
-          found = true;
+      for (let i = 0; i < keys.length; i += 1) {
+        if (time <= keys[i].time) {
           index = i;
+          break;
         }
       }
 
-      return this.keys[index - 1].interpolateRealtime(this.keys[index], time, this.smoothing);
+      return keys[index - 1].interpolateRealtime(keys[index], time, this.smoothing);
     }
 
     // Get start & end time of curve
@@ -251,6 +326,10 @@ class Curve<T> {
     static objectBuilder(inValue: object, outValue: object, duration = 1, easing: Easing = Easing.cubic): Curve<object> {
       return Curve.builder<object>(ObjectKeyframe, inValue, outValue, duration, easing);
     }
+}
+
+interface Curve<T> {
+    (time: number, modifierStop?: number): T;
 }
 
 export default Curve;

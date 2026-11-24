@@ -1,6 +1,6 @@
 import { Easing } from 'eaz';
 import Keyframe from './Keyframe';
-import NumberKeyframe from './NumberKeyframe';
+import NumberKeyframe, { easeTime, lerp } from './NumberKeyframe';
 
 class ListKeyframe extends Keyframe<number[]> {
     truncate: boolean;
@@ -18,6 +18,17 @@ class ListKeyframe extends Keyframe<number[]> {
     }
 
     interpolate(keyframe: ListKeyframe, time: number): number[] {
+      if (this.toNumberKeyframes === toNumberKeyframes && keyframe.toNumberKeyframes === toNumberKeyframes) {
+        const from = this.value;
+        const to = keyframe.value;
+        const shorter = from.length <= to.length;
+        const t = easeTime(this.inEasing, keyframe.outEasing, time);
+        if (this.truncate ? shorter : !shorter) {
+          return from.map((value, i) => lerp(value, i in to ? to[i] : 0, t));
+        }
+        return to.map((value, i) => lerp(i in from ? from[i] : 0, value, t));
+      }
+
       const numberKeyframes = this.toNumberKeyframes();
       const nextNumberKeyframes = keyframe.toNumberKeyframes();
       const defaultKeyframe = new NumberKeyframe(this.time, 0, this.inEasing, this.outEasing);
@@ -35,5 +46,7 @@ class ListKeyframe extends Keyframe<number[]> {
       return this.value.map((v) => new NumberKeyframe(this.time, v, this.inEasing, this.outEasing));
     }
 }
+
+const { toNumberKeyframes } = ListKeyframe.prototype;
 
 export default ListKeyframe;

@@ -1,9 +1,18 @@
 import Keyframe from './Keyframe';
 import { Vector3 } from '../interfaces/Vector3';
-import NumberKeyframe from './NumberKeyframe';
+import NumberKeyframe, { easeTime, lerp } from './NumberKeyframe';
 
 class Vector3Keyframe extends Keyframe<Vector3> {
   interpolate(keyframe: Vector3Keyframe, time: number): Vector3 {
+    if (this.toFloatKeyframe === toFloatKeyframe && keyframe.toFloatKeyframe === toFloatKeyframe) {
+      const t = easeTime(this.inEasing, keyframe.outEasing, time);
+      return {
+        x: lerp(this.value.x, keyframe.value.x, t),
+        y: lerp(this.value.y, keyframe.value.y, t),
+        z: lerp(this.value.z, keyframe.value.z, t),
+      };
+    }
+
     const floatKeyframes = this.toFloatKeyframe();
     const nextFloatKeyframes = keyframe.toFloatKeyframe();
 
@@ -22,5 +31,7 @@ class Vector3Keyframe extends Keyframe<Vector3> {
     ];
   }
 }
+
+const { toFloatKeyframe } = Vector3Keyframe.prototype;
 
 export default Vector3Keyframe;

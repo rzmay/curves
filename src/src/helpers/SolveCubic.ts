@@ -3,7 +3,7 @@ function cubeRoot(x: number): number {
   return x < 0 ? -y : y;
 }
 
-function solveCubic(a: number, b: number, c: number, d: number): number[] {
+export default function solveCubic(a: number, b: number, c: number, d: number): number[] {
   if (Math.abs(a) < 1e-8) { // Quadratic case, ax^2+bx+c=0
     a = b; b = c; c = d;
     if (Math.abs(a) < 1e-8) { // Linear case, ax+b=0
@@ -49,5 +49,3 @@ function solveCubic(a: number, b: number, c: number, d: number): number[] {
 
   return roots;
 }
-
-export default solveCubic;

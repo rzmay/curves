@@ -1,8 +1,10 @@
 import { Easing } from 'eaz';
 import Keyframe from './Keyframe';
-import NumberKeyframe from './NumberKeyframe';
+import NumberKeyframe, { easeTime, lerp } from './NumberKeyframe';
 
 class BooleanKeyframe extends Keyframe<boolean> {
+    private static readonly defaultNumberKeyframe = BooleanKeyframe.prototype.numberKeyframe;
+
     solveInterpolation: boolean;
     truthThreshold: number;
 
@@ -22,6 +24,11 @@ class BooleanKeyframe extends Keyframe<boolean> {
 
     interpolate(keyframe: BooleanKeyframe, time: number): boolean {
       if (this.solveInterpolation) {
+        if (this.numberKeyframe === BooleanKeyframe.defaultNumberKeyframe
+            && keyframe.numberKeyframe === BooleanKeyframe.defaultNumberKeyframe) {
+          const t = easeTime(this.inEasing, keyframe.outEasing, time);
+          return lerp(this.value ? 1 : 0, keyframe.value ? 1 : 0, t) > this.truthThreshold;
+        }
         const value = this.numberKeyframe().interpolate(keyframe.numberKeyframe(), time);
         return value > this.truthThreshold;
       }
